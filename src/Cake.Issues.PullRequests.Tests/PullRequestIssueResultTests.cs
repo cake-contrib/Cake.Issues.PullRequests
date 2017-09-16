@@ -1,8 +1,6 @@
 ﻿namespace Cake.Issues.PullRequests.Tests
 {
     using System.Collections.Generic;
-    using Issues.IssueProvider;
-    using Issues.PullRequests;
     using Issues.Testing;
     using Shouldly;
     using Xunit;

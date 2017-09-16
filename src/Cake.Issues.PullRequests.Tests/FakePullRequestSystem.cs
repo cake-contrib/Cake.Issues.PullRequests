@@ -3,10 +3,6 @@
     using System.Collections.Generic;
     using Core.Diagnostics;
     using Core.IO;
-    using Issues;
-    using Issues.IssueProvider;
-    using Issues.PullRequests;
-    using Issues.PullRequests.PullRequestSystem;
 
     /// <summary>
     /// Implementation of a <see cref="Issues.PullRequests.PullRequestSystem.PullRequestSystem"/> for use in test cases.

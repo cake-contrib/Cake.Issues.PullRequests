@@ -3,13 +3,9 @@
     using System.Collections.Generic;
     using Cake.Testing;
     using Core.Diagnostics;
-    using Issues;
-    using Issues.IssueProvider;
-    using Issues.PullRequests;
-    using Issues.PullRequests.PullRequestSystem;
     using Issues.Testing;
 
-    public class PullRequestsFixture
+    internal class PullRequestsFixture
     {
         public PullRequestsFixture()
         {

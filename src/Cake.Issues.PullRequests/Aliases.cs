@@ -4,9 +4,6 @@
     using Core;
     using Core.Annotations;
     using Core.IO;
-    using Issues;
-    using Issues.IssueProvider;
-    using PullRequestSystem;
 
     /// <summary>
     /// Contains functionality related to reporting issues to pull requests.
@@ -40,7 +37,7 @@
         /// </code>
         /// </example>
         [CakeMethodAlias]
-        [CakeAliasCategory(PullRequestsAliasConstants.ReadCakeAliasCategory)]
+        [CakeAliasCategory(PullRequestsAliasConstants.ReportIssuesToPullRequestCakeAliasCategory)]
         public static PullRequestIssueResult ReportIssuesToPullRequest(
             this ICakeContext context,
             IIssueProvider issueProvider,
@@ -89,7 +86,7 @@
         /// </code>
         /// </example>
         [CakeMethodAlias]
-        [CakeAliasCategory(PullRequestsAliasConstants.ReadCakeAliasCategory)]
+        [CakeAliasCategory(PullRequestsAliasConstants.ReportIssuesToPullRequestCakeAliasCategory)]
         public static PullRequestIssueResult ReportIssuesToPullRequest(
             this ICakeContext context,
             IEnumerable<IIssueProvider> issueProviders,
@@ -142,7 +139,7 @@
         /// </code>
         /// </example>
         [CakeMethodAlias]
-        [CakeAliasCategory(PullRequestsAliasConstants.ReadCakeAliasCategory)]
+        [CakeAliasCategory(PullRequestsAliasConstants.ReportIssuesToPullRequestCakeAliasCategory)]
         public static PullRequestIssueResult ReportIssuesToPullRequest(
             this ICakeContext context,
             IIssueProvider issueProvider,
@@ -197,7 +194,7 @@
         /// </code>
         /// </example>
         [CakeMethodAlias]
-        [CakeAliasCategory(PullRequestsAliasConstants.ReadCakeAliasCategory)]
+        [CakeAliasCategory(PullRequestsAliasConstants.ReportIssuesToPullRequestCakeAliasCategory)]
         public static PullRequestIssueResult ReportIssuesToPullRequest(
             this ICakeContext context,
             IEnumerable<IIssueProvider> issueProviders,
