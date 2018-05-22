@@ -9,15 +9,16 @@ BuildParameters.SetParameters(
     title: "Cake.Issues.PullRequests",
     repositoryOwner: "cake-contrib",
     repositoryName: "Cake.Issues.PullRequests",
-    appVeyorAccountName: "cakecontrib");
+    appVeyorAccountName: "cakecontrib",
+    shouldRunCodecov: false);
 
 BuildParameters.PrintParameters(Context);
 
 ToolSettings.SetToolSettings(
     context: Context,
-    dupFinderExcludePattern: new string[] { BuildParameters.RootDirectoryPath + "/src/Cake.Issues.PullRequests.Tests/*.cs" },
+    dupFinderExcludePattern: new string[] { BuildParameters.RootDirectoryPath + "/src/Cake.Issues.PullRequests.Tests/*.cs", BuildParameters.RootDirectoryPath + "/src/Cake.Issues*/**/*.AssemblyInfo.cs" },
     testCoverageFilter: "+[*]* -[xunit.*]* -[Cake.Core]* -[Cake.Testing]* -[*.Tests]* -[Cake.Issues]* -[Cake.Issues.Testing]*",
     testCoverageExcludeByAttribute: "*.ExcludeFromCodeCoverage*",
     testCoverageExcludeByFile: "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs");
 
-Build.Run();
+Build.RunDotNetCore();
