@@ -105,13 +105,12 @@
                     fixture.FilterIssues(
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo")
+                            IssueBuilder
+                                .NewIssue("Message", "ProviderType", "ProviderName")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         },
                         new Dictionary<IIssue, IEnumerable<IPullRequestDiscussionComment>>()));
 

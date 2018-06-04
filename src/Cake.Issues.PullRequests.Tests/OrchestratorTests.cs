@@ -156,20 +156,18 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo"),
-                            new Issue(
-                                @"src\Cake.Issues.Tests\NotModified.cs",
-                                12,
-                                "Bar",
-                                0,
-                                "Bar",
-                                "Bar")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create(),
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                                .InFile(@"src\Cake.Issues.Tests\NotModified.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         }));
 
                 fixture.PullRequestSystem =
@@ -200,20 +198,18 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo"),
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                12,
-                                "Bar",
-                                0,
-                                "Bar",
-                                "Bar")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create(),
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         }));
 
                 fixture.PullRequestSystem =
@@ -229,7 +225,7 @@
                                 {
                                     new PullRequestDiscussionComment()
                                     {
-                                        Content = "Foo",
+                                        Content = "Message Foo",
                                         IsDeleted = false
                                     }
                                 })
@@ -261,20 +257,16 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                null,
-                                null,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo"),
-                            new Issue(
-                                null,
-                                null,
-                                "Bar",
-                                0,
-                                "Bar",
-                                "Bar")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create(),
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         }));
 
                 fixture.PullRequestSystem =
@@ -290,7 +282,7 @@
                                 {
                                     new PullRequestDiscussionComment()
                                     {
-                                        Content = "Foo",
+                                        Content = "Message Foo",
                                         IsDeleted = false
                                     }
                                 })
@@ -322,13 +314,12 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create(),
                         }));
 
                 fixture.PullRequestSystem =
@@ -370,21 +361,19 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "Bar");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -423,21 +412,19 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Bar",
-                        1,
-                        "Bar",
-                        "Bar");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Error)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -476,21 +463,18 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        null,
-                        null,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "Bar");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -529,37 +513,34 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeA", "ProviderNameA")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue3 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeB", "ProviderNameB")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue4 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
+
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
                 fixture.IssueProviders.Add(
@@ -589,8 +570,8 @@
                 result.PostedIssues.Count().ShouldBe(2);
                 result.PostedIssues.ShouldContain(issue1);
                 result.PostedIssues.ShouldContain(issue3);
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
                 fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 2 issue(s):"));
             }
 
@@ -599,37 +580,34 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Foo",
-                        1,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeA", "ProviderNameA")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Error)
+                        .Create();
                 var issue3 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Bar",
-                        1,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeB", "ProviderNameB")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Error)
+                        .Create();
                 var issue4 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
+
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
                 fixture.IssueProviders.Add(
@@ -659,8 +637,8 @@
                 result.PostedIssues.Count().ShouldBe(2);
                 result.PostedIssues.ShouldContain(issue2);
                 result.PostedIssues.ShouldContain(issue3);
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
                 fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 2 issue(s):"));
             }
 
@@ -669,37 +647,32 @@
             {
                 // Given
                 var issue1 =
-                    new Issue(
-                        null,
-                        null,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue2 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        12,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "ProviderA");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue3 =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var issue4 =
-                    new Issue(
-                        null,
-                        null,
-                        "Bar",
-                        0,
-                        "Bar",
-                        "ProviderB");
+                    IssueBuilder
+                        .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
+
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
                 fixture.IssueProviders.Add(
@@ -729,8 +702,8 @@
                 result.PostedIssues.Count().ShouldBe(2);
                 result.PostedIssues.ShouldContain(issue2);
                 result.PostedIssues.ShouldContain(issue3);
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeA were filtered to match the maximum of 1 issues which should be reported for each issue provider");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) of type ProviderTypeB were filtered to match the maximum of 1 issues which should be reported for each issue provider");
                 fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 2 issue(s):"));
             }
 
@@ -745,20 +718,18 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo"),
-                            new Issue(
-                                @"src\Cake.Issues.Tests\NotModified.cs",
-                                12,
-                                "Bar",
-                                0,
-                                "Bar",
-                                "Bar")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create(),
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
+                                .InFile(@"src\Cake.Issues.Tests\NotModified.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         }));
 
                 fixture.PullRequestSystem =
@@ -802,13 +773,12 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            new Issue(
-                                @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                                10,
-                                "Foo",
-                                0,
-                                "Foo",
-                                "Foo")
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create()
                         }));
 
                 fixture.PullRequestSystem =
@@ -836,13 +806,12 @@
             {
                 // Given
                 var issueToPost =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -879,13 +848,11 @@
             {
                 // Given
                 var issueToPost =
-                    new Issue(
-                        null,
-                        null,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -922,13 +889,12 @@
             {
                 // Given
                 var issueToPost =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
 
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
@@ -964,21 +930,19 @@
             {
                 // Given
                 var reportedIssue =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var postedIssue =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
                 fixture.IssueProviders.Add(
@@ -1016,21 +980,19 @@
             {
                 // Given
                 var firstIssue =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                    IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var secondIssue =
-                    new Issue(
-                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
-                        10,
-                        "Foo",
-                        0,
-                        "Foo",
-                        "Foo");
+                     IssueBuilder
+                        .NewIssue("Message Foo", "ProviderType Foo", "ProviderName Foo")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                        .OfRule("Rule Foo")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
                 var fixture = new PullRequestsFixture();
                 fixture.IssueProviders.Clear();
                 fixture.IssueProviders.Add(
