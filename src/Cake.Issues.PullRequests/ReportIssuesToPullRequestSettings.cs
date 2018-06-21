@@ -1,5 +1,6 @@
 ﻿namespace Cake.Issues.PullRequests
 {
+    using System;
     using System.Collections.Generic;
     using Core.IO;
 
@@ -9,6 +10,7 @@
     public class ReportIssuesToPullRequestSettings : RepositorySettings
     {
         private readonly Dictionary<IIssueProvider, int> maxIssuesToPost = new Dictionary<IIssueProvider, int>();
+        private readonly List<Func<IEnumerable<IIssue>, IEnumerable<IIssue>>> issueFilters = new List<Func<IEnumerable<IIssue>, IEnumerable<IIssue>>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportIssuesToPullRequestSettings"/> class.
@@ -29,18 +31,18 @@
         /// <see cref="IIssueProvider"/>.
         /// Issues are filtered by <see cref="IIssue.Priority"/> and issues with an <see cref="IIssue.AffectedFileRelativePath"/>
         /// are prioritized.
-        /// Set to <see langword="null"/> to not set a global limit.
+        /// Set to <c>null</c> to not set a global limit.
         /// Default is to not set a global limit.
         /// Use <see cref="MaxIssuesToPostForEachIssueProvider"/> to set the limit for each issue provider.
         /// </summary>
         public int? MaxIssuesToPost { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the global number of issues which should be posted at for each
+        /// Gets or sets the number of issues which should be posted at maximum for each
         /// <see cref="IIssueProvider"/>.
         /// Issues are filtered by <see cref="IIssue.Priority"/> and issues with an <see cref="IIssue.AffectedFileRelativePath"/>
         /// are prioritized.
-        /// Set to <see langword="null"/> to not limit issues per issue provider.
+        /// Set to <c>null</c> to not limit issues per issue provider.
         /// Default is to filter to 100 issues for each issue provider.
         /// Use <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers.
         /// </summary>
@@ -51,5 +53,10 @@
         /// Only comments with the same source will be resolved.
         /// </summary>
         public string CommentSource { get; set; } = "CakeIssues";
+
+        /// <summary>
+        /// Gets list of filter functions which should be applied before posting issues to pull requests.
+        /// </summary>
+        public IList<Func<IEnumerable<IIssue>, IEnumerable<IIssue>>> IssueFilters => this.issueFilters;
     }
 }
