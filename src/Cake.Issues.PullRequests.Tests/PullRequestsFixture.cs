@@ -1,9 +1,9 @@
 ﻿namespace Cake.Issues.PullRequests.Tests
 {
     using System.Collections.Generic;
+    using Cake.Core.Diagnostics;
+    using Cake.Issues.Testing;
     using Cake.Testing;
-    using Core.Diagnostics;
-    using Issues.Testing;
 
     internal class PullRequestsFixture
     {
@@ -41,7 +41,7 @@
 
         public IEnumerable<IIssue> FilterIssues(
             IEnumerable<IIssue> issues,
-            IDictionary<IIssue, IEnumerable<IPullRequestDiscussionComment>> issueComments)
+            IDictionary<IIssue, IssueCommentInfo> issueComments)
         {
             this.PullRequestSystem?.Initialize(this.ReportIssuesToPullRequestSettings);
 

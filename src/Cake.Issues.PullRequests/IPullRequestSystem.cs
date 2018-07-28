@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Core.IO;
+    using Cake.Core.IO;
 
     /// <summary>
     /// Interface describing a pull request server.
@@ -19,21 +19,27 @@
         /// <summary>
         /// Returns the preferred format for pull request comments.
         /// </summary>
-        /// <returns>The preferred format for pull request comments</returns>
+        /// <returns>The preferred format for pull request comments.</returns>
         IssueCommentFormat GetPreferredCommentFormat();
 
         /// <summary>
-        /// Returns a list of all active discussion threads.
+        /// Returns a list of all discussion threads.
         /// </summary>
         /// <param name="commentSource">Value used to indicate threads created by this addin.</param>
-        /// <returns>List of all active discussion threads.</returns>
-        IEnumerable<IPullRequestDiscussionThread> FetchActiveDiscussionThreads(string commentSource);
+        /// <returns>List of all discussion threads.</returns>
+        IEnumerable<IPullRequestDiscussionThread> FetchDiscussionThreads(string commentSource);
 
         /// <summary>
         /// Marks a list of discussion threads as resolved.
         /// </summary>
         /// <param name="threads">Threads to mark as fixed.</param>
-        void MarkThreadsAsFixed(IEnumerable<IPullRequestDiscussionThread> threads);
+        void ResolveDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads);
+
+        /// <summary>
+        /// Marks a list of discussion threads as active.
+        /// </summary>
+        /// <param name="threads">Threads to mark as active.</param>
+        void ReopenDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads);
 
         /// <summary>
         /// Returns a list of all files modified in a pull request.

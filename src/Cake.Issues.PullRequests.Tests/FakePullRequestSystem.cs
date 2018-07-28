@@ -1,8 +1,8 @@
 ﻿namespace Cake.Issues.PullRequests.Tests
 {
     using System.Collections.Generic;
-    using Core.Diagnostics;
-    using Core.IO;
+    using Cake.Core.Diagnostics;
+    using Cake.Core.IO;
 
     /// <summary>
     /// Implementation of a <see cref="Issues.PullRequests.PullRequestSystem.PullRequestSystem"/> for use in test cases.
@@ -11,13 +11,14 @@
     {
         private readonly List<IPullRequestDiscussionThread> discussionThreads = new List<IPullRequestDiscussionThread>();
         private readonly List<FilePath> modifiedFiles = new List<FilePath>();
-        private readonly List<IPullRequestDiscussionThread> threadsMarkedAsFixed = new List<IPullRequestDiscussionThread>();
+        private readonly List<IPullRequestDiscussionThread> resolvedThreads = new List<IPullRequestDiscussionThread>();
+        private readonly List<IPullRequestDiscussionThread> reopenedThreads = new List<IPullRequestDiscussionThread>();
         private readonly List<IIssue> postedIssues = new List<IIssue>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FakePullRequestSystem"/> class.
         /// </summary>
-        /// <param name="log">The Cake log instance</param>
+        /// <param name="log">The Cake log instance.</param>
         public FakePullRequestSystem(ICakeLog log)
             : base(log)
         {
@@ -27,7 +28,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FakePullRequestSystem"/> class.
         /// </summary>
-        /// <param name="log">The Cake log instance</param>
+        /// <param name="log">The Cake log instance.</param>
         /// <param name="discussionThreads">Discussion threads which the pull request system should return.</param>
         /// <param name="modifiedFiles">List of modified files which the pull request system should return.</param>
         public FakePullRequestSystem(
@@ -51,14 +52,25 @@
             this.Initialize();
         }
 
+        /// <summary>
+        /// Gets the log instance.
+        /// </summary>
         public new ICakeLog Log => base.Log;
 
+        /// <summary>
+        /// Gets the settings which should be used.
+        /// </summary>
         public new ReportIssuesToPullRequestSettings Settings => base.Settings;
 
         /// <summary>
         /// Gets the discussion threads marked as fixed.
         /// </summary>
-        public IEnumerable<IPullRequestDiscussionThread> ThreadsMarkedAsFixed => this.threadsMarkedAsFixed;
+        public IEnumerable<IPullRequestDiscussionThread> ResolvedThreads => this.resolvedThreads;
+
+        /// <summary>
+        /// Gets the discussion threads marked as active.
+        /// </summary>
+        public IEnumerable<IPullRequestDiscussionThread> ReopenedThreads => this.reopenedThreads;
 
         /// <summary>
         /// Gets the issues posted to the pull request.
@@ -101,7 +113,7 @@
         }
 
         /// <inheritdoc />
-        protected override IEnumerable<IPullRequestDiscussionThread> InternalFetchActiveDiscussionThreads(string commentSource)
+        protected override IEnumerable<IPullRequestDiscussionThread> InternalFetchDiscussionThreads(string commentSource)
         {
             return this.discussionThreads;
         }
@@ -113,13 +125,23 @@
         }
 
         /// <inheritdoc />
-        protected override void InternalMarkThreadsAsFixed(IEnumerable<IPullRequestDiscussionThread> threads)
+        protected override void InternalResolveDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads)
         {
             // ReSharper disable once PossibleMultipleEnumeration
             threads.NotNull(nameof(threads));
 
             // ReSharper disable once PossibleMultipleEnumeration
-            this.threadsMarkedAsFixed.AddRange(threads);
+            this.resolvedThreads.AddRange(threads);
+        }
+
+        /// <inheritdoc />
+        protected override void InternalReopenDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            threads.NotNull(nameof(threads));
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            this.reopenedThreads.AddRange(threads);
         }
 
         /// <inheritdoc />

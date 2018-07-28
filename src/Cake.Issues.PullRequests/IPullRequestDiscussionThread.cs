@@ -1,7 +1,7 @@
 ﻿namespace Cake.Issues.PullRequests
 {
     using System.Collections.Generic;
-    using Core.IO;
+    using Cake.Core.IO;
 
     /// <summary>
     /// Description of a collection of pull request comments relating to each other.
@@ -17,6 +17,11 @@
         /// Gets or sets if the thread is active or already fixed.
         /// </summary>
         PullRequestDiscussionStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resolution of the thred if <see cref="Status"/> is <see cref="PullRequestDiscussionStatus.Resolved"/>.
+        /// </summary>
+        PullRequestDiscussionResolution Resolution { get; set; }
 
         /// <summary>
         /// Gets or sets the path to the file where the message should be posted.

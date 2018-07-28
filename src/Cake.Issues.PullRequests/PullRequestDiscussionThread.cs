@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Core.IO;
+    using Cake.Core.IO;
 
     /// <summary>
     /// Base class for a collection of pull request comments relating to each other.
@@ -52,6 +52,9 @@
 
         /// <inheritdoc/>
         public PullRequestDiscussionStatus Status { get; set; }
+
+        /// <inheritdoc/>
+        public PullRequestDiscussionResolution Resolution { get; set; }
 
         /// <inheritdoc/>
         public FilePath AffectedFileRelativePath { get; set; }

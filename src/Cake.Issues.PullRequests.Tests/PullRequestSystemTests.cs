@@ -1,9 +1,9 @@
 ﻿namespace Cake.Issues.PullRequests.Tests
 {
     using System.Collections.Generic;
+    using Cake.Issues.Testing;
     using Cake.Testing;
     using Shouldly;
-    using Testing;
     using Xunit;
 
     public sealed class PullRequestSystemTests
@@ -59,7 +59,7 @@
                 var prSystem = new FakePullRequestSystem(new FakeLog());
 
                 // When
-                var result = Record.Exception(() => prSystem.FetchActiveDiscussionThreads("Foo"));
+                var result = Record.Exception(() => prSystem.FetchDiscussionThreads("Foo"));
 
                 // Then
                 result.IsInvalidOperationException("Initialize needs to be called first.");
@@ -91,7 +91,7 @@
                 var prSystem = new FakePullRequestSystem(new FakeLog());
 
                 // When
-                var result = Record.Exception(() => prSystem.MarkThreadsAsFixed(new List<IPullRequestDiscussionThread>()));
+                var result = Record.Exception(() => prSystem.ResolveDiscussionThreads(new List<IPullRequestDiscussionThread>()));
 
                 // Then
                 result.IsInvalidOperationException("Initialize needs to be called first.");

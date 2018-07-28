@@ -1,8 +1,8 @@
 ﻿namespace Cake.Issues.PullRequests
 {
     using System.Collections.Generic;
-    using Core.Diagnostics;
-    using Core.IO;
+    using Cake.Core.Diagnostics;
+    using Cake.Core.IO;
 
     /// <summary>
     /// Base class for all pull request system implementations.
@@ -31,11 +31,11 @@
         }
 
         /// <inheritdoc/>
-        public IEnumerable<IPullRequestDiscussionThread> FetchActiveDiscussionThreads(string commentSource)
+        public IEnumerable<IPullRequestDiscussionThread> FetchDiscussionThreads(string commentSource)
         {
             this.AssertSettings();
 
-            return this.InternalFetchActiveDiscussionThreads(commentSource);
+            return this.InternalFetchDiscussionThreads(commentSource);
         }
 
         /// <inheritdoc/>
@@ -47,11 +47,19 @@
         }
 
         /// <inheritdoc/>
-        public void MarkThreadsAsFixed(IEnumerable<IPullRequestDiscussionThread> threads)
+        public void ResolveDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads)
         {
             this.AssertSettings();
 
-            this.InternalMarkThreadsAsFixed(threads);
+            this.InternalResolveDiscussionThreads(threads);
+        }
+
+        /// <inheritdoc/>
+        public void ReopenDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads)
+        {
+            this.AssertSettings();
+
+            this.InternalReopenDiscussionThreads(threads);
         }
 
         /// <inheritdoc/>
@@ -63,12 +71,12 @@
         }
 
         /// <summary>
-        /// Returns a list of all active discussion threads.
-        /// Compared to <see cref="FetchActiveDiscussionThreads"/> it is safe to access Settings from this method.
+        /// Returns a list of all discussion threads.
+        /// Compared to <see cref="FetchDiscussionThreads"/> it is safe to access Settings from this method.
         /// </summary>
         /// <param name="commentSource">Value used to indicate threads created by this addin.</param>
-        /// <returns>List of all active discussion threads.</returns>
-        protected abstract IEnumerable<IPullRequestDiscussionThread> InternalFetchActiveDiscussionThreads(string commentSource);
+        /// <returns>List of all discussion threads.</returns>
+        protected abstract IEnumerable<IPullRequestDiscussionThread> InternalFetchDiscussionThreads(string commentSource);
 
         /// <summary>
         /// Returns a list of all files modified in a pull request.
@@ -79,10 +87,17 @@
 
         /// <summary>
         /// Marks a list of discussion threads as resolved.
-        /// Compared to <see cref="MarkThreadsAsFixed"/> it is safe to access Settings from this method.
+        /// Compared to <see cref="ResolveDiscussionThreads"/> it is safe to access Settings from this method.
         /// </summary>
         /// <param name="threads">Threads to mark as fixed.</param>
-        protected abstract void InternalMarkThreadsAsFixed(IEnumerable<IPullRequestDiscussionThread> threads);
+        protected abstract void InternalResolveDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads);
+
+        /// <summary>
+        /// Marks a list of discussion threads as active.
+        /// Compared to <see cref="ReopenDiscussionThreads"/> it is safe to access Settings from this method.
+        /// </summary>
+        /// <param name="threads">Threads to mark as active.</param>
+        protected abstract void InternalReopenDiscussionThreads(IEnumerable<IPullRequestDiscussionThread> threads);
 
         /// <summary>
         /// Posts discussion threads for all issues which need to be posted.
