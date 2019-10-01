@@ -3,7 +3,7 @@
 This addin for the Cake build automation system allows you to write issues from any code analyzer or linter as comments to pull requests.
 
 For more information about this addin see the [Cake.Issues website](https://cakeissues.net)
-and for general information about the Cake build automation system see the [Cake website](http://cakebuild.net)
+and for general information about the Cake build automation system see the [Cake website](http://cakebuild.net).
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/cake-contrib/Cake.Issues.PullRequests/blob/develop/LICENSE)
 
@@ -31,10 +31,10 @@ and for general information about the Cake build automation system see the [Cake
 
 ## Chat Room
 
-Come join in the conversation about this addin in our Gitter Chat Room
+Come join in the conversation about this addin in our Gitter Chat Room.
 
 [![Join the chat at https://gitter.im/cake-contrib/Lobby](https://badges.gitter.im/cake-contrib/Lobby.svg)](https://gitter.im/cake-contrib/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Contributing
 
-Contributions are welcome. See [Contribution Guidelines](CONTRIBUTING.md)
+Contributions are welcome. See [Contribution Guidelines](CONTRIBUTING.md).
