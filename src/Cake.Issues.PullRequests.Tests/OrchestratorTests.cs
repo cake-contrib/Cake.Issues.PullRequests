@@ -807,6 +807,7 @@ namespace Cake.Issues.PullRequests.Tests
                 // Then
                 result.ReportedIssues.Count().ShouldBe(3);
                 result.PostedIssues.Count().ShouldBe(0);
+                fixture.Log.Entries.ShouldContain(x => x.Message == "2 issue(s) were filtered because they were already present");
                 fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global issue limit of 2 across all runs (2 issues already posted in previous runs)");
                 fixture.Log.Entries.ShouldContain(x => x.Message == "All issues were filtered. Nothing new to post.");
             }
