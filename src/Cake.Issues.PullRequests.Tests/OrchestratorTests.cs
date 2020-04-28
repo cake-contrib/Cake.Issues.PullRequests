@@ -733,7 +733,7 @@ namespace Cake.Issues.PullRequests.Tests
         public sealed class TheRunMethodWithDiscussionThreadsCapability
         {
             [Fact]
-            public void Should_Limit_Messages_To_Maximum_Across_Runs_Does_Exceed_The_Number()
+            public void Should_Limit_Messages_To_Maximum_Across_Runs_Nothing_New_To_Post()
             {
                 // Given
                 var issue1 =
@@ -772,26 +772,21 @@ namespace Cake.Issues.PullRequests.Tests
                                         {
                                             new PullRequestDiscussionComment
                                             {
-                                                Content = "Message FooBar",
+                                                Content = "Message Foo",
                                                 IsDeleted = false
                                             }
                                         }),
                                     new PullRequestDiscussionThread(
-                                        1,
+                                        2,
                                         PullRequestDiscussionStatus.Active,
                                         @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
                                         new List<IPullRequestDiscussionComment>
                                         {
                                             new PullRequestDiscussionComment
                                             {
-                                                Content = "Message FooBar",
+                                                Content = "Message Bar",
                                                 IsDeleted = false
                                             },
-                                            new PullRequestDiscussionComment
-                                            {
-                                                Content = "Message BarFoo",
-                                                IsDeleted = false
-                                            }
                                         })
                                 }));
 
@@ -812,9 +807,8 @@ namespace Cake.Issues.PullRequests.Tests
                 // Then
                 result.ReportedIssues.Count().ShouldBe(3);
                 result.PostedIssues.Count().ShouldBe(0);
-                result.PostedIssues.ShouldContain(issue1);
-                fixture.Log.Entries.ShouldContain(x => x.Message == "0 issue(s) were filtered to match the global issue limit of 2 across all runs (2 issues already posted in previous runs)");
-                fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 0 issue(s):"));
+                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global issue limit of 2 across all runs (2 issues already posted in previous runs)");
+                fixture.Log.Entries.ShouldContain(x => x.Message == "All issues were filtered. Nothing new to post.");
             }
 
             [Fact]
