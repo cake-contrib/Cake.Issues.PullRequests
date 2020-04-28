@@ -1,4 +1,4 @@
-﻿namespace Cake.Issues.PullRequests.Tests
+namespace Cake.Issues.PullRequests.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -733,7 +733,7 @@
         public sealed class TheRunMethodWithDiscussionThreadsCapability
         {
             [Fact]
-            public void Should_Limit_Messages_To_Maximum_Across_Runs()
+            public void Should_Limit_Messages_To_Maximum_Across_Runs_Does_Exceed_The_Number()
             {
                 // Given
                 var issue1 =
@@ -747,6 +747,13 @@
                     IssueBuilder
                         .NewIssue("Message Bar", "ProviderType Bar", "ProviderName Bar")
                         .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                        .OfRule("Rule Bar")
+                        .WithPriority(IssuePriority.Warning)
+                        .Create();
+                var issue3 =
+                    IssueBuilder
+                        .NewIssue("Message BarFoo", "ProviderType Bar", "ProviderName Bar")
+                        .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 13)
                         .OfRule("Rule Bar")
                         .WithPriority(IssuePriority.Warning)
                         .Create();
@@ -768,6 +775,23 @@
                                                 Content = "Message FooBar",
                                                 IsDeleted = false
                                             }
+                                        }),
+                                    new PullRequestDiscussionThread(
+                                        1,
+                                        PullRequestDiscussionStatus.Active,
+                                        @"src\Cake.Issues.Tests\FakeIssueProvider.cs",
+                                        new List<IPullRequestDiscussionComment>
+                                        {
+                                            new PullRequestDiscussionComment
+                                            {
+                                                Content = "Message FooBar",
+                                                IsDeleted = false
+                                            },
+                                            new PullRequestDiscussionComment
+                                            {
+                                                Content = "Message BarFoo",
+                                                IsDeleted = false
+                                            }
                                         })
                                 }));
 
@@ -777,7 +801,7 @@
                         fixture.Log,
                         new List<IIssue>
                         {
-                            issue1, issue2
+                            issue1, issue2, issue3
                         }));
 
                 fixture.ReportIssuesToPullRequestSettings.MaxIssuesToPostAcrossRuns = 2;
@@ -786,11 +810,11 @@
                 var result = fixture.RunOrchestratorForIssueProviders();
 
                 // Then
-                result.ReportedIssues.Count().ShouldBe(2);
-                result.PostedIssues.Count().ShouldBe(1);
+                result.ReportedIssues.Count().ShouldBe(3);
+                result.PostedIssues.Count().ShouldBe(0);
                 result.PostedIssues.ShouldContain(issue1);
-                fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global issue limit of 2 across all runs (1 issues already posted in previous runs)");
-                fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 1 issue(s):"));
+                fixture.Log.Entries.ShouldContain(x => x.Message == "0 issue(s) were filtered to match the global issue limit of 2 across all runs (2 issues already posted in previous runs)");
+                fixture.Log.Entries.ShouldContain(x => x.Message.StartsWith("Posting 0 issue(s):"));
             }
 
             [Fact]
