@@ -274,10 +274,8 @@ namespace Cake.Issues.PullRequests
             // Apply global issue limit over multiple runs
             if (this.settings.MaxIssuesToPostAcrossRuns.HasValue && existingThreads != null)
             {
-                var existingCommentsCount = existingThreads.SelectMany(p => p.Comments).Count();
-
                 var maxIssuesToPostInThisRun =
-                    this.settings.MaxIssuesToPostAcrossRuns.Value - existingCommentsCount;
+                    this.settings.MaxIssuesToPostAcrossRuns.Value - existingThreads.Count;
                 var countBefore = issues.Count;
                 result =
                     result
@@ -293,7 +291,7 @@ namespace Cake.Issues.PullRequests
                     "{0} issue(s) were filtered to match the global issue limit of {1} across all runs ({2} issues already posted in previous runs)",
                     issuesFilteredCount,
                     this.settings.MaxIssuesToPostAcrossRuns,
-                    existingCommentsCount);
+                    existingThreads.Count);
             }
 
             this.log.Verbose(
