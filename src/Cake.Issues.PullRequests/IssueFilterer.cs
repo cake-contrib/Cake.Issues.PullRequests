@@ -1,4 +1,4 @@
-﻿namespace Cake.Issues.PullRequests
+namespace Cake.Issues.PullRequests
 {
     using System;
     using System.Collections.Generic;
@@ -48,10 +48,12 @@
         /// <param name="issues">Found issues.</param>
         /// <param name="issueComments">List of existing comments on the pull request or null if the
         /// pull request system doesn't support discussions.</param>
+        /// <param name="existingThreads">List of threads which were reported by Cake.Issues</param>
         /// <returns>List of filtered issues.</returns>
         public IEnumerable<IIssue> FilterIssues(
             IEnumerable<IIssue> issues,
-            IDictionary<IIssue, IssueCommentInfo> issueComments)
+            IDictionary<IIssue, IssueCommentInfo> issueComments,
+            IReadOnlyCollection<IPullRequestDiscussionThread> existingThreads)
         {
             // ReSharper disable once PossibleMultipleEnumeration
             issues.NotNull(nameof(issues));
@@ -66,7 +68,7 @@
                 result = this.FilterPreExistingComments(result, issueComments);
             }
 
-            result = this.FilterIssuesByNumber(result);
+            result = this.FilterIssuesByNumber(result, existingThreads);
 
             // Apply custom filters.
             foreach (var filterer in this.settings.IssueFilters)
@@ -207,8 +209,11 @@
         /// Limits the number of issues so as to not overload the pull request with too many comments.
         /// </summary>
         /// <param name="issues">List of issues which should be filtered.</param>
+        /// <param name="existingThreads">List of threads which were reported by Cake.Issues.</param>
         /// <returns>List of issues limited to the maximum number of issues to post.</returns>
-        private IList<IIssue> FilterIssuesByNumber(IList<IIssue> issues)
+        private IList<IIssue> FilterIssuesByNumber(
+            IList<IIssue> issues,
+            IReadOnlyCollection<IPullRequestDiscussionThread> existingThreads)
         {
             if (!issues.Any())
             {
@@ -264,6 +269,29 @@
                     "{0} issue(s) were filtered to match the global issue limit of {1}",
                     issuesFilteredCount,
                     this.settings.MaxIssuesToPost);
+            }
+
+            // Apply global issue limit over multiple runs
+            if (this.settings.MaxIssuesToPostAcrossRuns.HasValue && existingThreads != null)
+            {
+                var maxIssuesToPostInThisRun =
+                    this.settings.MaxIssuesToPostAcrossRuns.Value - existingThreads.Count;
+                var countBefore = issues.Count;
+                result =
+                    result
+                        .OrderByDescending(x => x.Priority)
+                        .ThenBy(x => x.AffectedFileRelativePath is null)
+                        .ThenBy(x => x.AffectedFileRelativePath?.FullPath)
+                        .Take(maxIssuesToPostInThisRun)
+                        .ToList();
+                var issuesFilteredCount = countBefore - result.Count;
+                totalIssuesFilteredCount += issuesFilteredCount;
+
+                this.log.Information(
+                    "{0} issue(s) were filtered to match the global issue limit of {1} across all runs ({2} issues already posted in previous runs)",
+                    issuesFilteredCount,
+                    this.settings.MaxIssuesToPostAcrossRuns,
+                    existingThreads.Count);
             }
 
             this.log.Verbose(

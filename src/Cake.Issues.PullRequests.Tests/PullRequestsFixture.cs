@@ -1,4 +1,4 @@
-﻿namespace Cake.Issues.PullRequests.Tests
+namespace Cake.Issues.PullRequests.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -67,14 +67,32 @@
             IEnumerable<IIssue> issues,
             IDictionary<IIssue, IssueCommentInfo> issueComments)
         {
+            return
+                this
+                    .GetIssueFilterer()
+                    .FilterIssues(issues, issueComments, null);
+        }
+
+        public IEnumerable<IIssue> FilterIssues(
+            IEnumerable<IIssue> issues,
+            IDictionary<IIssue, IssueCommentInfo> issueComments,
+            IReadOnlyCollection<IPullRequestDiscussionThread> existingThreads)
+        {
+            return
+                this
+                    .GetIssueFilterer()
+                    .FilterIssues(issues, issueComments, existingThreads);
+        }
+
+        private IssueFilterer GetIssueFilterer()
+        {
             this.PullRequestSystem?.Initialize(this.ReportIssuesToPullRequestSettings);
 
-            var issueFilterer =
+            return
                 new IssueFilterer(
                     this.Log,
                     this.PullRequestSystem,
                     this.ReportIssuesToPullRequestSettings);
-            return issueFilterer.FilterIssues(issues, issueComments);
         }
     }
 }
