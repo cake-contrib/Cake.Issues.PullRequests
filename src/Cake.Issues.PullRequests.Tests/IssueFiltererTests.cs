@@ -483,9 +483,9 @@
                         {
                             Settings =
                             {
-                                MaxIssuesToPostAcrossRunsForEachProvider = new Dictionary<string, int>
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
                                 {
-                                    { "ProviderType Foo", 2 },
+                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
                                 }
                             }
                         };
@@ -562,9 +562,9 @@
                         {
                             Settings =
                             {
-                                MaxIssuesToPostAcrossRunsForEachProvider = new Dictionary<string, int>
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
                                 {
-                                    { "ProviderType Foo", 2 },
+                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
                                 }
                             }
                         };
@@ -634,9 +634,9 @@
                         {
                             Settings =
                             {
-                                MaxIssuesToPostAcrossRunsForEachProvider = new Dictionary<string, int>
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
                                 {
-                                    { "ProviderType Foo", 2 },
+                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
                                 }
                             }
                         };

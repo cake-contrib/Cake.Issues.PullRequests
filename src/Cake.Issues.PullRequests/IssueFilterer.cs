@@ -249,6 +249,47 @@ namespace Cake.Issues.PullRequests
                 }
             }
 
+            // Apply issue limits per provider for this run
+            if (this.settings.ProviderIssueLimits != null &&
+                this.settings.ProviderIssueLimits.Count > 0)
+            {
+                foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
+                {
+                    var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPost).GetValueOrDefault();
+                    if (currentProviderTypeMaxLimit <= 0)
+                    {
+                        continue;
+                    }
+
+                    var currentProviderType = currentProviderLimitPair.Key;
+
+                    var existingThreadCountForProvider =
+                        existingThreads.Count(p => p.ProviderType == currentProviderType);
+                    var maxIssuesLeftToTakeForProviderType =
+                        currentProviderTypeMaxLimit - existingThreadCountForProvider;
+                    var newIssuesForProviderType =
+                        result.Where(p => p.ProviderType == currentProviderType)
+                            .SortWithDefaultPriorization()
+                            .ToArray();
+                    if (newIssuesForProviderType.Length <= maxIssuesLeftToTakeForProviderType)
+                    {
+                        continue;
+                    }
+
+                    result = result.Where(p => p.ProviderType != currentProviderType)
+                        .Concat(newIssuesForProviderType.Take(maxIssuesLeftToTakeForProviderType))
+                        .ToList();
+
+                    var issuesFilteredCount = newIssuesForProviderType.Length - maxIssuesLeftToTakeForProviderType;
+                    this.log.Information(
+                        "{0} issue(s) were filtered to match the global limit of {1} issues which should be reported for issue provider '{2}'",
+                        issuesFilteredCount,
+                        currentProviderTypeMaxLimit,
+                        currentProviderType,
+                        existingThreads.Count);
+                }
+            }
+
             // Apply global issue limit
             if (this.settings.MaxIssuesToPost.HasValue)
             {
@@ -268,17 +309,18 @@ namespace Cake.Issues.PullRequests
             }
 
             // Apply issue limits per provider across mulitple runs
-            if (this.settings.MaxIssuesToPostAcrossRunsForEachProvider != null &&
-                this.settings.MaxIssuesToPostAcrossRunsForEachProvider.Count > 0)
+            if (this.settings.ProviderIssueLimits != null &&
+                this.settings.ProviderIssueLimits.Count > 0)
             {
-                foreach (var currentProviderMaxLimitPair in this.settings.MaxIssuesToPostAcrossRunsForEachProvider)
+                foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
                 {
-                    var currentProviderType = currentProviderMaxLimitPair.Key;
-                    var currentProviderTypeMaxLimit = currentProviderMaxLimitPair.Value;
+                    var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPostAcrossRuns).GetValueOrDefault();
                     if (currentProviderTypeMaxLimit <= 0)
                     {
                         continue;
                     }
+
+                    var currentProviderType = currentProviderLimitPair.Key;
 
                     var existingThreadCountForProvider =
                         existingThreads.Count(p => p.ProviderType == currentProviderType);
