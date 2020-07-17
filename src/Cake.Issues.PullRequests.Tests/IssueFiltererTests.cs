@@ -472,7 +472,6 @@
                     }
                 }
 
-
                 public sealed class ForPropertyMaxIssuesToPostAcrossRunsForEachProvider
                 {
                     [Fact]
@@ -704,6 +703,194 @@
                         issues.ShouldContain(issue2);
                         issues.ShouldContain(issue4);
                         fixture.Log.Entries.ShouldContain(x => x.Message == "2 issue(s) were filtered to match the global issue limit of 2 across all runs for provider 'ProviderType Foo' (1 issues already posted in previous runs)");
+                    }
+                }
+
+                public sealed class ForPropertyMaxIssuesToPostForEachProvider
+                {
+                    [Fact]
+                    public void Should_Limit_Messages_To_Maximum()
+                    {
+                        // Given
+                        var fixture = new IssueFiltererFixture
+                        {
+                            Settings =
+                            {
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
+                                {
+                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
+                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
+                                }
+                            }
+                        };
+
+                        var issue1 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue2 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeA", "ProviderNameA")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue3 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeB", "ProviderNameB")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue4 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+
+                        // When
+                        var issues =
+                            fixture.FilterIssues(
+                                new List<IIssue>
+                                {
+                                    issue1, issue2, issue3, issue4
+                                },
+                                new Dictionary<IIssue, IssueCommentInfo>());
+
+                        // Then
+                        issues.Count().ShouldBe(2);
+                        issues.ShouldContain(issue1);
+                        issues.ShouldContain(issue3);
+
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeA'");
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeB'");
+                    }
+
+                    [Fact]
+                    public void Should_Limit_Messages_To_Maximum_By_Priority()
+                    {
+                        // Given
+                        var fixture = new IssueFiltererFixture
+                        {
+                            Settings =
+                            {
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
+                                {
+                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
+                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
+                                }
+                            }
+                        };
+
+                        var issue1 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue2 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeA", "ProviderNameA")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Error)
+                                .Create();
+                        var issue3 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeB", "ProviderNameB")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Error)
+                                .Create();
+                        var issue4 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+
+                        // When
+                        var issues =
+                            fixture.FilterIssues(
+                                new List<IIssue>
+                                {
+                                    issue1, issue2, issue3, issue4
+                                },
+                                new Dictionary<IIssue, IssueCommentInfo>());
+
+                        // Then
+                        issues.Count().ShouldBe(2);
+                        issues.ShouldContain(issue2);
+                        issues.ShouldContain(issue3);
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeA'");
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeB'");
+                    }
+
+                    [Fact]
+                    public void Should_Limit_Messages_To_Maximum_By_FilePath()
+                    {
+                        // Given
+                        var fixture = new IssueFiltererFixture
+                        {
+                            Settings =
+                            {
+                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
+                                {
+                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
+                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
+                                }
+                            }
+                        };
+
+                        var issue1 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue2 =
+                            IssueBuilder
+                                .NewIssue("Message Foo", "ProviderTypeA", "ProviderNameA")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 12)
+                                .OfRule("Rule Foo")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue3 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                                .InFile(@"src\Cake.Issues.Tests\FakeIssueProvider.cs", 10)
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+                        var issue4 =
+                            IssueBuilder
+                                .NewIssue("Message Bar", "ProviderTypeB", "ProviderNameB")
+                                .OfRule("Rule Bar")
+                                .WithPriority(IssuePriority.Warning)
+                                .Create();
+
+                        // When
+                        var issues =
+                            fixture.FilterIssues(
+                                new List<IIssue>
+                                {
+                                    issue1, issue2, issue3, issue4
+                                },
+                                new Dictionary<IIssue, IssueCommentInfo>());
+
+                        // Then
+                        issues.Count().ShouldBe(2);
+                        issues.ShouldContain(issue2);
+                        issues.ShouldContain(issue3);
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeA'");
+                        fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeB'");
                     }
                 }
 

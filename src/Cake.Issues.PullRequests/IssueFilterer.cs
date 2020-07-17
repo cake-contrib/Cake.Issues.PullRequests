@@ -263,30 +263,26 @@ namespace Cake.Issues.PullRequests
 
                     var currentProviderType = currentProviderLimitPair.Key;
 
-                    var existingThreadCountForProvider =
-                        existingThreads.Count(p => p.ProviderType == currentProviderType);
-                    var maxIssuesLeftToTakeForProviderType =
-                        currentProviderTypeMaxLimit - existingThreadCountForProvider;
                     var newIssuesForProviderType =
                         result.Where(p => p.ProviderType == currentProviderType)
                             .SortWithDefaultPriorization()
                             .ToArray();
-                    if (newIssuesForProviderType.Length <= maxIssuesLeftToTakeForProviderType)
+                    if (newIssuesForProviderType.Length <= currentProviderTypeMaxLimit)
                     {
                         continue;
                     }
 
+                    var countBefore = result.Count;
                     result = result.Where(p => p.ProviderType != currentProviderType)
-                        .Concat(newIssuesForProviderType.Take(maxIssuesLeftToTakeForProviderType))
+                        .Concat(newIssuesForProviderType.Take(currentProviderTypeMaxLimit))
                         .ToList();
 
-                    var issuesFilteredCount = newIssuesForProviderType.Length - maxIssuesLeftToTakeForProviderType;
+                    var issuesFilteredCount = countBefore - result.Count;
                     this.log.Information(
                         "{0} issue(s) were filtered to match the global limit of {1} issues which should be reported for issue provider '{2}'",
                         issuesFilteredCount,
                         currentProviderTypeMaxLimit,
-                        currentProviderType,
-                        existingThreads.Count);
+                        currentProviderType);
                 }
             }
 
