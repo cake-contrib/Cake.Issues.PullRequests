@@ -35,14 +35,10 @@
         int? MaxIssuesToPostAcrossRuns { get; set; }
 
         /// <summary>
-        /// Gets or sets the global number of issues which should be posted at maximum over all by each
-        /// <see cref="IIssueProvider"/> and across multiple runs.
-        /// Issues are filtered by <see cref="IIssue.Priority"/> and issues with an <see cref="IIssue.AffectedFileRelativePath"/>
-        /// are prioritized.
-        /// Leaving it out won't set a limit across multiple runs.
-        /// Use <see cref="MaxIssuesToPostForEachIssueProvider"/> to set the limit for each issue provider
-        /// and <see cref="MaxIssuesToPostAcrossRuns"/> to set a global limit for all providers across multiple runs.
-        /// Use <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers for a single run.
+        /// Gets or sets the issue limits for eech individual <see cref="IIssueProvider"/>.
+        /// The key must be the <see cref="IIssue.ProviderType"/> of a specific provider to which the limits should be applied to.
+        /// Use <see cref="MaxIssuesToPostAcrossRuns"/> to set a global limit for all providers across multiple runs.
+        /// and <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers for a single run.
         /// </summary>
         Dictionary<string, IProviderIssueLimits> ProviderIssueLimits { get; set; }
 
