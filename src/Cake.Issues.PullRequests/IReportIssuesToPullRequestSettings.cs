@@ -44,7 +44,7 @@
         /// and <see cref="MaxIssuesToPostAcrossRuns"/> to set a global limit for all providers across multiple runs.
         /// Use <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers for a single run.
         /// </summary>
-        Dictionary<string, int?> MaxIssuesToPostAcrossRunsForEachProvider { get; set; }
+        Dictionary<string, int> MaxIssuesToPostAcrossRunsForEachProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the number of issues which should be posted at maximum for each

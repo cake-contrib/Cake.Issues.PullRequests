@@ -64,6 +64,9 @@
 
         /// <inheritdoc/>
         public string CommentSource { get; set; }
+ 
+        /// <inheritdoc/>
+        public string ProviderType { get; set; }
 
         /// <inheritdoc/>
         public string CommentIdentifier { get; set; }
