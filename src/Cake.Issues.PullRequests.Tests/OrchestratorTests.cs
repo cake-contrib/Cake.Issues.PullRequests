@@ -731,11 +731,12 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3, issue4
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeA",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeB",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -794,11 +795,12 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3, issue4
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeA",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeB",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -855,11 +857,12 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3, issue4
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeA",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeB",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -953,11 +956,12 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3, issue4, issue5, issue6, issue7, issue8, issue9
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 3) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeA",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderTypeB",
+                    new ProviderIssueIssueLimits(maxIssuesToPost: 3));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1416,10 +1420,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1466,10 +1469,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1524,10 +1526,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 1));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1616,10 +1617,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2, issue3
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1688,10 +1688,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                 // When
                 var result = fixture.RunOrchestrator();
@@ -1756,10 +1755,9 @@ namespace Cake.Issues.PullRequests.Tests
                             issue1, issue2
                         }));
 
-                fixture.Settings.ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                {
-                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) }
-                };
+                fixture.Settings.ProviderIssueLimits.Add(
+                    "ProviderType Foo",
+                    new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                 // When
                 var result = fixture.RunOrchestrator();

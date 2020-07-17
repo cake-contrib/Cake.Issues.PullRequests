@@ -36,7 +36,8 @@
         string CommentSource { get; set; }
 
         /// <summary>
-        /// Gets or sets a value  used to identify specific provider origins later on when reading back existing issues.
+        /// Gets or sets a the provider type which reported the issue.
+        /// This value is used to identify the comment in subsequent runs.
         /// </summary>
         string ProviderType { get; set; }
 

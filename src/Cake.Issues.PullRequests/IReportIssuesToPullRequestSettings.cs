@@ -19,8 +19,7 @@
         /// Issues are filtered by <see cref="IIssue.Priority"/> and issues with an <see cref="IIssue.AffectedFileRelativePath"/>
         /// are prioritized.
         /// Default is <c>null</c> which won't set a global limit.
-        /// Use <see cref="MaxIssuesToPostForEachIssueProvider"/> to set the limit for each issue provider
-        /// and <see cref="MaxIssuesToPostAcrossRuns"/> to set a limit across multiple runs.
+        /// Use <see cref="MaxIssuesToPostAcrossRuns"/> to set a limit across multiple runs.
         /// </summary>
         int? MaxIssuesToPost { get; set; }
 
@@ -35,24 +34,22 @@
         int? MaxIssuesToPostAcrossRuns { get; set; }
 
         /// <summary>
-        /// Gets or sets the issue limits for eech individual <see cref="IIssueProvider"/>.
-        /// The key must be the <see cref="IIssue.ProviderType"/> of a specific provider to which the limits should be applied to.
-        /// Use <see cref="MaxIssuesToPostAcrossRuns"/> to set a global limit for all providers across multiple runs.
-        /// and <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers for a single run.
-        /// </summary>
-        Dictionary<string, IProviderIssueLimits> ProviderIssueLimits { get; set; }
-
-        /// <summary>
         /// Gets or sets the number of issues which should be posted at maximum for each
         /// <see cref="IIssueProvider"/>.
         /// Issues are filtered by <see cref="IIssue.Priority"/> and issues with an <see cref="IIssue.AffectedFileRelativePath"/>
         /// are prioritized.
         /// <c>null</c> won't limit issues per issue provider.
         /// Default is to filter to 100 issues for each issue provider.
-        /// Use <see cref="MaxIssuesToPost"/> to set the global limit over all issue providers.
+        /// Use <see cref="ProviderIssueLimits"/> to set limits for individual issue providers.
         /// </summary>
-        [Obsolete("Use ProviderIssueLimits instead.")]
         int? MaxIssuesToPostForEachIssueProvider { get; set; }
+
+        /// <summary>
+        /// Gets the issue limits for individual <see cref="IIssueProvider"/>.
+        /// The key must be the <see cref="IIssue.ProviderType"/> of a specific provider to which the limits should be applied to.
+        /// Use <see cref="MaxIssuesToPostForEachIssueProvider"/> to set the same limit to all issue providers.
+        /// </summary>
+        Dictionary<string, IProviderIssueLimits> ProviderIssueLimits { get; }
 
         /// <summary>
         /// Gets or sets a value used to decorate comments created by this addin.

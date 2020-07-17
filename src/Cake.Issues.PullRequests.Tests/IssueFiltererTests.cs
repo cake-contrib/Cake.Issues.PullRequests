@@ -478,16 +478,10 @@
                     public void Should_Limit_Messages_To_Maximum()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderType Foo",
+                            new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                         var newIssue1 =
                             IssueBuilder
@@ -557,16 +551,10 @@
                     public void Should_Limit_Messages_To_Maximum_By_Priority()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderType Foo",
+                            new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                         var issue1 =
                             IssueBuilder
@@ -629,16 +617,10 @@
                     public void Should_Limit_Messages_To_Maximum_By_FilePath()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderType Foo", new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2) },
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderType Foo",
+                            new ProviderIssueIssueLimits(maxIssuesToPostAcrossRuns: 2));
 
                         var issue1 =
                             IssueBuilder
@@ -712,17 +694,13 @@
                     public void Should_Limit_Messages_To_Maximum()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeA",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeB",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                         var issue1 =
                             IssueBuilder
@@ -775,17 +753,13 @@
                     public void Should_Limit_Messages_To_Maximum_By_Priority()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeA",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeB",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                         var issue1 =
                             IssueBuilder
@@ -837,17 +811,13 @@
                     public void Should_Limit_Messages_To_Maximum_By_FilePath()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 1) }
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeA",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeB",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
 
                         var issue1 =
                             IssueBuilder
@@ -893,22 +863,17 @@
                         fixture.Log.Entries.ShouldContain(x => x.Message == "1 issue(s) were filtered to match the global limit of 1 issues which should be reported for issue provider 'ProviderTypeB'");
                     }
 
-
                     [Fact]
                     public void Should_Limit_Messages_To_Maximum_With_Different_Maximum_Limits()
                     {
                         // Given
-                        var fixture = new IssueFiltererFixture
-                        {
-                            Settings =
-                            {
-                                ProviderIssueLimits = new Dictionary<string, IProviderIssueLimits>
-                                {
-                                    { "ProviderTypeA", new ProviderIssueIssueLimits(maxIssuesToPost: 1) },
-                                    { "ProviderTypeB", new ProviderIssueIssueLimits(maxIssuesToPost: 3) }
-                                }
-                            }
-                        };
+                        var fixture = new IssueFiltererFixture();
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeA",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 1));
+                        fixture.Settings.ProviderIssueLimits.Add(
+                            "ProviderTypeB",
+                            new ProviderIssueIssueLimits(maxIssuesToPost: 3));
 
                         var issue1 =
                             IssueBuilder
@@ -973,7 +938,6 @@
                                 .OfRule("Rule Bar")
                                 .WithPriority(IssuePriority.Warning)
                                 .Create();
-
 
                         // When
                         var issues =

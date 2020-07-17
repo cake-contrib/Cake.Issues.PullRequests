@@ -4,20 +4,24 @@
     using System.Linq;
 
     /// <summary>
-    /// Extensions for the IIssue-Interface
+    /// Extensions for <see cref="IIssue"/>s.
     /// </summary>
-    public static class IIssueExtensions
+    internal static class IIssueExtensions
     {
         /// <summary>
         /// Sorts issues based on the following criteria:
-        /// 1. Priority (descending)
-        /// 2. AffectedFileRelativePath is null?
-        /// 3. The AffectedFileRelativePath's FullPath.
+        /// <list type="number">
+        /// <description><see cref="IIssue.Priority"/> descending</description>
+        /// <description><see cref="IIssue.AffectedFileRelativePath"/> is null</description>
+        /// <description> The <see cref="IIssue.AffectedFileRelativePath"/> FullPath.</description>
+        /// </list>
         /// </summary>
-        /// <param name="issues">Issues to be sorted</param>
-        /// <returns>The sorted issues</returns>
+        /// <param name="issues">Issues to be sorted.</param>
+        /// <returns>The sorted issues.</returns>
         public static IEnumerable<IIssue> SortWithDefaultPriorization(this IEnumerable<IIssue> issues)
         {
+            issues.NotNull(nameof(issues));
+
             return issues
                 .OrderByDescending(x => x.Priority)
                 .ThenBy(x => x.AffectedFileRelativePath is null)

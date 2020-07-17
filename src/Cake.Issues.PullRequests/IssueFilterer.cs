@@ -250,40 +250,36 @@ namespace Cake.Issues.PullRequests
             }
 
             // Apply issue limits per provider for this run
-            if (this.settings.ProviderIssueLimits != null &&
-                this.settings.ProviderIssueLimits.Count > 0)
+            foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
             {
-                foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
+                var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPost).GetValueOrDefault();
+                if (currentProviderTypeMaxLimit <= 0)
                 {
-                    var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPost).GetValueOrDefault();
-                    if (currentProviderTypeMaxLimit <= 0)
-                    {
-                        continue;
-                    }
-
-                    var currentProviderType = currentProviderLimitPair.Key;
-
-                    var newIssuesForProviderType =
-                        result.Where(p => p.ProviderType == currentProviderType)
-                            .SortWithDefaultPriorization()
-                            .ToArray();
-                    if (newIssuesForProviderType.Length <= currentProviderTypeMaxLimit)
-                    {
-                        continue;
-                    }
-
-                    var countBefore = result.Count;
-                    result = result.Where(p => p.ProviderType != currentProviderType)
-                        .Concat(newIssuesForProviderType.Take(currentProviderTypeMaxLimit))
-                        .ToList();
-
-                    var issuesFilteredCount = countBefore - result.Count;
-                    this.log.Information(
-                        "{0} issue(s) were filtered to match the global limit of {1} issues which should be reported for issue provider '{2}'",
-                        issuesFilteredCount,
-                        currentProviderTypeMaxLimit,
-                        currentProviderType);
+                    continue;
                 }
+
+                var currentProviderType = currentProviderLimitPair.Key;
+
+                var newIssuesForProviderType =
+                    result.Where(p => p.ProviderType == currentProviderType)
+                        .SortWithDefaultPriorization()
+                        .ToArray();
+                if (newIssuesForProviderType.Length <= currentProviderTypeMaxLimit)
+                {
+                    continue;
+                }
+
+                var countBefore = result.Count;
+                result = result.Where(p => p.ProviderType != currentProviderType)
+                    .Concat(newIssuesForProviderType.Take(currentProviderTypeMaxLimit))
+                    .ToList();
+
+                var issuesFilteredCount = countBefore - result.Count;
+                this.log.Information(
+                    "{0} issue(s) were filtered to match the global limit of {1} issues which should be reported for issue provider '{2}'",
+                    issuesFilteredCount,
+                    currentProviderTypeMaxLimit,
+                    currentProviderType);
             }
 
             // Apply global issue limit
@@ -305,44 +301,40 @@ namespace Cake.Issues.PullRequests
             }
 
             // Apply issue limits per provider across mulitple runs
-            if (this.settings.ProviderIssueLimits != null &&
-                this.settings.ProviderIssueLimits.Count > 0)
+            foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
             {
-                foreach (var currentProviderLimitPair in this.settings.ProviderIssueLimits)
+                var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPostAcrossRuns).GetValueOrDefault();
+                if (currentProviderTypeMaxLimit <= 0)
                 {
-                    var currentProviderTypeMaxLimit = (currentProviderLimitPair.Value?.MaxIssuesToPostAcrossRuns).GetValueOrDefault();
-                    if (currentProviderTypeMaxLimit <= 0)
-                    {
-                        continue;
-                    }
-
-                    var currentProviderType = currentProviderLimitPair.Key;
-
-                    var existingThreadCountForProvider =
-                        existingThreads.Count(p => p.ProviderType == currentProviderType);
-                    var maxIssuesLeftToTakeForProviderType =
-                        currentProviderTypeMaxLimit - existingThreadCountForProvider;
-                    var newIssuesForProviderType =
-                        result.Where(p => p.ProviderType == currentProviderType)
-                            .SortWithDefaultPriorization()
-                            .ToArray();
-                    if (newIssuesForProviderType.Length <= maxIssuesLeftToTakeForProviderType)
-                    {
-                        continue;
-                    }
-
-                    result = result.Where(p => p.ProviderType != currentProviderType)
-                        .Concat(newIssuesForProviderType.Take(maxIssuesLeftToTakeForProviderType))
-                        .ToList();
-
-                    var issuesFilteredCount = newIssuesForProviderType.Length - maxIssuesLeftToTakeForProviderType;
-                    this.log.Information(
-                        "{0} issue(s) were filtered to match the global issue limit of {1} across all runs for provider '{2}' ({3} issues already posted in previous runs)",
-                        issuesFilteredCount,
-                        currentProviderTypeMaxLimit,
-                        currentProviderType,
-                        existingThreads.Count);
+                    continue;
                 }
+
+                var currentProviderType = currentProviderLimitPair.Key;
+
+                var existingThreadCountForProvider =
+                    existingThreads.Count(p => p.ProviderType == currentProviderType);
+                var maxIssuesLeftToTakeForProviderType =
+                    currentProviderTypeMaxLimit - existingThreadCountForProvider;
+                var newIssuesForProviderType =
+                    result.Where(p => p.ProviderType == currentProviderType)
+                        .SortWithDefaultPriorization()
+                        .ToArray();
+                if (newIssuesForProviderType.Length <= maxIssuesLeftToTakeForProviderType)
+                {
+                    continue;
+                }
+
+                result = result.Where(p => p.ProviderType != currentProviderType)
+                    .Concat(newIssuesForProviderType.Take(maxIssuesLeftToTakeForProviderType))
+                    .ToList();
+
+                var issuesFilteredCount = newIssuesForProviderType.Length - maxIssuesLeftToTakeForProviderType;
+                this.log.Information(
+                    "{0} issue(s) were filtered to match the global issue limit of {1} across all runs for provider '{2}' ({3} issues already posted in previous runs)",
+                    issuesFilteredCount,
+                    currentProviderTypeMaxLimit,
+                    currentProviderType,
+                    existingThreads.Count);
             }
 
             // Apply global issue limit over multiple runs
